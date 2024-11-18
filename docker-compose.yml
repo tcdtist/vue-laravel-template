@@ -1,0 +1,35 @@
+version: "3"
+services:
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/var/www/html
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_DATABASE: monorepo_demo
+      DB_USERNAME: root
+      DB_PASSWORD: root
+
+  client:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+    command: npm run dev
+
+  db:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: monorepo_demo
+      MYSQL_ROOT_PASSWORD: root

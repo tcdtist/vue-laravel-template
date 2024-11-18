@@ -1,0 +1,29 @@
+name: CD
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      # Thêm các bước deploy tùy theo hosting service của bạn
+      # Ví dụ với Digital Ocean:
+      - name: Deploy to Digital Ocean
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DO_HOST }}
+          username: ${{ secrets.DO_USERNAME }}
+          key: ${{ secrets.DO_SSH_KEY }}
+          script: |
+            cd /var/www/html/my-monorepo
+            git pull origin main
+            cd /backend
+            composer install --no-interaction --prefer-dist --optimize-autoloader
+            php artisan migrate --force
+            cd ../client
+            npm ci
+            npm run build

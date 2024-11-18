@@ -1,0 +1,11 @@
+{
+  "name": "vue-laravel-starter",
+  "description": "A starter template for Vue.js and Laravel projects",
+  "author": "Chi Thanh Dang (tist)",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
